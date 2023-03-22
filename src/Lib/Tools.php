@@ -18,7 +18,7 @@ class Tools {
     {
         while($row = $var->fetch()) 
         {
-            $this->debugVar($row);
+            self::debugVar($row);
             echo '--------------------------------------------------------------';
         }
     }

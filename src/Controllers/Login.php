@@ -14,7 +14,7 @@ class Login
 
         if($input !== null)
         {
-            if(!isset($input['email']) || empty($input['email']) || !filter_var($input['email']) || !isset($input['password']) || empty($input['password']))
+            if(!isset($input['email']) ||  !filter_var($input['email'],FILTER_VALIDATE_EMAIL) || !isset($input['password']) || empty($input['password']))
             {
                 throw new \RuntimeException('Les identifiants ne correspondent à aucun compte existant');
             }
