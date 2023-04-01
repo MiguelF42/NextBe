@@ -31,8 +31,8 @@
                 </ul>
             </div>
             <div class="account">
-                <a href="#">
-                    <button>Login</button>
+                <a href="?action=login">
+                    <button>Connexion</button>
                 </a>
             </div>
         </nav>

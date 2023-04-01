@@ -13,21 +13,19 @@ ob_start(); ?>
                 </p>
             </div>
             <div id="search-bar" class="flex-r flex-r-c">
-                <form action="" method="post">
-                    <label for="departure-airport">Point de départ
+                <form action="?action=reservation" method="post">
+                    <label for="departure-airport">Point de départ :
                         <select name="departure-airport" id="departure-airport">
+                            <option value="default">Aéroport de départ</option>
                         </select>
                     </label>
-                    <label for="arrival-airport">Destination
+                    <label for="arrival-airport">Destination :
                         <select name="arrival-airport" id="arrival-airport">
-    
+                            <option value="default">Aéroport de destination</option>
                         </select>
                     </label>
-                    <label for="departure-date">Date de départ
+                    <label for="departure-date">Date de départ :
                         <input name="departure-date" id="departure-date" type="date" min="">
-                    </label>
-                    <label for="arrival-date">Date de retour
-                        <input name="arrival-date" id="arrival-date" type="date" min="">
                     </label>
                     <button type="submit">Send</button>
                 </form>
