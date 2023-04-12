@@ -50,6 +50,7 @@ else
         break;
 
         default:
+            return 'error 404';
         break;
     }
 }

@@ -59,5 +59,6 @@
             else nav.classList.add('active');
         }
     </script>
+    <?= $script ?>
 </body>
 </html>
