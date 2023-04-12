@@ -15,14 +15,10 @@ ob_start(); ?>
             <div id="search-bar" class="flex-r flex-r-c">
                 <form action="?action=reservation" method="post">
                     <label for="departure-airport">Point de départ :
-                        <select name="departure-airport" id="departure-airport">
-                            <option value="default">Aéroport de départ</option>
-                        </select>
+                        <input type="text" name="departure-airport" id="departure-airport" class="searching">
                     </label>
                     <label for="arrival-airport">Destination :
-                        <select name="arrival-airport" id="arrival-airport">
-                            <option value="default">Aéroport de destination</option>
-                        </select>
+                        <input type="text" name="arrival-airport" id="arrival-airport" class="searching">
                     </label>
                     <label for="departure-date">Date de départ :
                         <input name="departure-date" id="departure-date" type="date" min="">
@@ -42,9 +38,45 @@ ob_start(); ?>
 
             </section>
         </article>
+
 <?php
 
 $content = ob_get_clean();
+
+ob_start();
+
+?>
+<script>
+    const myHeaders = new Headers();
+
+    const dpAirport = document.getElementById('departure-airport');
+    const arAirport = document.getElementById('arrival-airport');
+
+    dpAirport.oninput = (e) => {search(e);};
+    arAirport.oninput = (e) => {search(e);};
+
+    function search(e) 
+    {
+        let url = window.location.href.split('?')[0];
+        let data = e.target.value;
+
+        const myInit = {
+            method: 'POST',
+            header: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: {
+                search: data
+            }
+        };
+
+        fetch(url+'?action=airports',myInit);
+    } 
+
+</script>
+<?php
+
+$script = ob_get_clean();
 
 require('layout.php');
 

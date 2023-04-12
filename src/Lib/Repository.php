@@ -16,7 +16,7 @@ abstract class Repository
     const ATTRIBUTES_PREPARE = 'undefined';
 
     // CONST FOR LOGGER WORKING
-    const LOG_TABLE = 'log';
+    const LOG_TABLE = 'logs';
 
     protected DatabaseConnection $database;
     protected Logger $logger;
