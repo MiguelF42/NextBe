@@ -8,6 +8,9 @@ use Application\Lib\Tools;
 use Application\Controllers\Homepage;
 use Application\Controllers\Login;
 use Application\Controllers\Signup;
+use Application\Controllers\Companies;
+
+Tools::defaultUser();
 
 if(!isset($_GET['action']))
 {
@@ -26,6 +29,10 @@ else
             (new Signup)->execute(Tools::isAPost());
         break;
         
+        case 'companies' :
+            (new Companies)->execute();
+        break;
+
         case 'admin' :
             //condition for admin access
             if(!$isAdmin)
@@ -50,6 +57,7 @@ else
         break;
 
         default:
+            echo 'error 404';
         break;
     }
 }

@@ -44,7 +44,7 @@ Class AdminRepository extends Repository
             return $data;
         }
         catch(\Exception $e){
-            return 'Erreur :'.$e->getMessage();
+           throw new \Exception ('Erreur :'.$e->getMessage());
         }
     }
 

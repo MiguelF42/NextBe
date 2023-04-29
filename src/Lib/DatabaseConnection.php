@@ -9,7 +9,7 @@ class DatabaseConnection {
     public function getConnection():\PDO {
 
         $host = 'localhost';
-        $db = 'db';
+        $db = 'nextbe';
         $login = 'root';
         $password = 'root';
 

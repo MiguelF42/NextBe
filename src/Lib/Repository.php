@@ -16,7 +16,7 @@ abstract class Repository
     const ATTRIBUTES_PREPARE = 'undefined';
 
     // CONST FOR LOGGER WORKING
-    const LOG_TABLE = 'log';
+    const LOG_TABLE = 'logs';
 
     protected DatabaseConnection $database;
     protected Logger $logger;
@@ -29,7 +29,8 @@ abstract class Repository
 
     protected function dataInClass(array $data)// Return an instance of static::CLASS_NAME with the data in argument
     {
-        return new ${static::CLASS_NAME}($data);
+        $class = 'Application\Lib\Classes\\'.static::CLASS_NAME;
+        return new $class($data);
     }
 
     protected function dataInArray(\PDOStatement $statement):array // Put all the data in an array of class
@@ -38,7 +39,7 @@ abstract class Repository
 
         while($row = $statement->fetch())
         {
-            $data = $this->dataInClass($row);
+            $data[] = $this->dataInClass($row);
         }
 
         return $data;
@@ -82,7 +83,7 @@ abstract class Repository
 
     protected function getDataById(int $id) // Get an element with his id and return an instance of static::CLASS_NAME
     {
-        $dataStatement = $this->database->getConnection()->query('SELECT * FROM '.static::TABLE_NAME.' WHERE id = '.$id);
+        $dataStatement = $this->database->getConnection()->query('SELECT * FROM '.static::TABLE_NAME.' WHERE '.static::ID_NAME.' = '.$id);
 
         $data = $dataStatement->fetch();
 

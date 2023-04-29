@@ -135,7 +135,7 @@
             return $userStatement->fetch();
         }
     
-        public function connectUser(array $input):bool
+        public function connectUser(array $input):bool|string
         {
             try
             {
@@ -143,7 +143,7 @@
     
                 if(!$userData || !password_verify($input['password'],$userData['password']))
                 {
-                    throw new \RuntimeExcpetion('L\'email et le mot de passe indiqué ne correspondent pas');
+                    throw new \RuntimeExcpetion('L\'email et le mot de passe indiqué ne correspondent à aucun compte existant');
                 }
                 $userObject = new User($userData);
         
@@ -167,8 +167,7 @@
             session_destroy();
             session_start();
     
-            $_SESSION['user'] = Tools::defaultUser();
-    
+            Tools::defaultUser();
             Tools::redirect();
         }
     
