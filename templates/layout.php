@@ -1,3 +1,10 @@
+<?php 
+
+use Application\Lib\Tools;
+
+$account = Tools::getSessionUserId() == 1 ? ['login','Connexion'] : ['account','Mon Compte'];
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,8 +39,8 @@
                 </ul>
             </div>
             <div class="account">
-                <a href="?action=login">
-                    <button>Connexion</button>
+                <a href="<?= $account[0] ?>">
+                    <button><?= $account[1] ?></button>
                 </a>
             </div>
         </nav>

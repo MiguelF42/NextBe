@@ -30,7 +30,7 @@ Class AdminRepository extends Repository
         }
     }
     
-    public function getAdminById(int $idAdmin):Admin
+    public function getAdminById(int $idAdmin):Admin|bool
     {
         try {
             $data = $this->getDataById($idAdmin);

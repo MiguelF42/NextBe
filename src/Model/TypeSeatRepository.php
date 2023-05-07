@@ -2,17 +2,17 @@
 Namespace Application\Model;
 
 Use Application\Lib\Repository;
-Use Application\Lib\Classes\Type_seat;
+Use Application\Lib\Classes\TypeSeat;
 
-Class Type_seatRepository extends Repository
+Class TypeSeatRepository extends Repository
 {
     const TABLE_NAME = 'type_seats';
-    const CLASS_NAME = 'Type_seat';
+    const CLASS_NAME = 'TypeSeat';
     const ID_NAME = 'id_type_seat';
     const ATTRIBUTES_NAME = 'id_seats,name,price';
     const ATTRIBUTES_PREPARE = '?,?,?';
 
-    public function getType_seats():array
+    public function getTypeSeats():array
     {
         try {
             $data = $this->getData();
@@ -30,7 +30,7 @@ Class Type_seatRepository extends Repository
         }
     }
     
-    public function getType_seatById(int $idType_seat):Type_seat
+    public function getTypeSeatById(int $idType_seat):TypeSeat
     {
         try {
             $data = $this->getDataById($idType_seat);
@@ -48,7 +48,7 @@ Class Type_seatRepository extends Repository
         }
     }
 
-    public function insertType_seat(array $data):bool
+    public function insertTypeSeat(array $data):bool
     {
         try{
             $newId = $this->insertData($data);
@@ -66,7 +66,7 @@ Class Type_seatRepository extends Repository
         }
     }
 
-    public function updateType_seat(int $idType_seat,array $data):bool
+    public function updateTypeSeat(int $idType_seat,array $data):bool
     {
         try{
             $this->updateData($idType_seat,$data);
@@ -84,7 +84,7 @@ Class Type_seatRepository extends Repository
         }
     }
 
-    public function deleteType_seat(int $idType_seat):bool
+    public function deleteTypeSeat(int $idType_seat):bool
     {
         try{
             $this->deleteData($idType_seat);
@@ -102,7 +102,7 @@ Class Type_seatRepository extends Repository
         }
     }
 
-    public function deleteMultipleType_seat(array $data):bool
+    public function deleteMultipleTypeSeat(array $data):bool
     {
         try{
             $this->deleteMultipleData($data);

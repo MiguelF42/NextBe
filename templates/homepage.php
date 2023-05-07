@@ -25,7 +25,7 @@ ob_start(); ?>
                     <label for="departure-date">Date de départ :
                         <input name="departure-date" id="departure-date" type="date" min="">
                     </label>
-                    <button type="submit">Send</button>
+                    <button type="submit">Rechercher</button>
                 </form>
             </div>
         </header>

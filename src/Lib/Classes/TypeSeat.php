@@ -2,18 +2,18 @@
 
 Namespace Application\Lib\Classes;
     
-class Type_seat
+class TypeSeat
 {
     
     private int $idSeats;
     private string $name;
     private int $price;
     
-    public function __construct(array $type_seat)
+    public function __construct(array $typeSeat)
     {
-        $this->idSeats = $type_seat['id_seats'];
-        $this->name = $type_seat['name'];
-        $this->price = $type_seat['price'];
+        $this->idSeats = $typeSeat['id_seats'];
+        $this->name = $typeSeat['name'];
+        $this->price = $typeSeat['price'];
         
     }
     

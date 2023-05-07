@@ -74,6 +74,30 @@ abstract class Repository
         return true;
     }
 
+    public function maxId()
+    {
+        $dataStatement = $this->database->getConnection()->query('SELECT MAX('.static::ID_NAME.') FROM '.static::TABLE_NAME);
+
+        $name = 'Select max id of '.static::TABLE_NAME;
+        $log = 'Selecting the next free id in the '.static::TABLE_NAME.' table';
+        $action = 'SELECT';
+
+        return $dataStatement->fetch()[0];
+    }
+
+    public function howMany()
+    {
+        $dataStatement = $this->database->getConnection()->query('SELECT COUNT(*) FROM '.static::TABLE_NAME);
+
+        $name = 'Select count of '.static::TABLE_NAME;
+        $log = 'Selecting the number of row in the '.static::TABLE_NAME.' table';
+        $action = 'SELECT';
+
+        $this->newLog($name,$log,$action);
+
+        return $dataStatement->fetch()[0];
+    }
+
     protected function getData():array // Get all the data of a table and return it in an array maked by the method dataInArray();
     {
         $dataStatement = $this->database->getConnection()->query('SELECT * FROM '.static::TABLE_NAME);
@@ -88,7 +112,7 @@ abstract class Repository
         $data = $dataStatement->fetch();
 
         if(empty($data)) {
-            throw new \RuntimeException("Id renseigné ne correspond à aucun élément", 1);
+            return false;
         }
 
         return $this->dataInClass($data);
@@ -96,9 +120,19 @@ abstract class Repository
 
     protected function insertData(array $data):int
     {
-        $insertStatement = $this->database->getConnection()->prepare('INSERT INTO '.static::TABLE_NAME.'('.static::ATTRIBUTES_NAME.') VALUES('.static::ATTRIBUTES_PREPARE.')');
+        // $insertStatement = $this->database->getConnection()->prepare('INSERT INTO '.static::TABLE_NAME.'('.str_replace(static::ID_NAME.',','',static::ATTRIBUTES_NAME).') VALUES('.static::ATTRIBUTES_PREPARE.')');
+        $tableBis = str_replace(static::ID_NAME.',','',str_replace('creation_date','',str_replace('modify_date','',static::ATTRIBUTES_NAME)));
+        $table = rtrim($tableBis,',');
+
+        $valuesBis = str_replace(',',',:',str_replace(static::ID_NAME.',','',str_replace('creation_date','',str_replace('modify_date','',static::ATTRIBUTES_NAME))));
+        $values = rtrim($valuesBis,',:');
+
+        // Tools::debugVar($table);
+        // Tools::debugVar($values);
+
+        $insertStatement = $this->database->getConnection()->prepare('INSERT INTO '.static::TABLE_NAME.'('.$table.') VALUES(:'.$values.')');
         $insertStatement->execute($data);
-        $id = Tools::lastId();
+        $id = $this->lastId();
         
         return $id;
     }
@@ -147,6 +181,11 @@ abstract class Repository
         $deleteStatement->fetch();
 
         return true;
+    }
+
+    protected function lastId():string
+    {
+        return $this->database->getConnection()->lastInsertId();
     }
 
     protected function newLog(string $name,string $log,string $action):bool

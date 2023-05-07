@@ -1,6 +1,7 @@
 <?php
     Namespace Application\Model;
     
+    use Application\Lib\Tools;
     use Application\Lib\Repository;
     use Application\Lib\Classes\User;
     
@@ -48,7 +49,7 @@
             }
         }
     
-        public function insertUser(array $data):bool
+        public function insertUser(array $data):int|string
         {
             try{
                 $newId = $this->insertData($data);
@@ -59,7 +60,7 @@
                 
                 $this->newLog($name,$log,$action);
     
-                return true;
+                return $newId;
             }
             catch(\Exception $e){
                 return 'Erreur :'.$e->getMessage();
@@ -120,13 +121,14 @@
                 return true;
             }
             catch(\Exception $e){
+                Tools::debugVar('Erreur :'.$e->getMessage());
                 return 'Erreur :'.$e->getMessage();
             }
         }
     
-        private function getUserByEmail(array $email):array
+        public function getUserByEmail(string $email):array|bool
         {
-            $userStatement = $this->database->getConnection()->query('SELECT * FROM user WHERE email = "'.$email.'"');
+            $userStatement = $this->database->getConnection()->query('SELECT * FROM '.static::TABLE_NAME.' WHERE email = "'.$email.'"');
     
             if (!$userStatement) {
                 throw new \RuntimeException('L\'email indiqué ne correspond à aucun utilisateur existant');
@@ -143,11 +145,11 @@
     
                 if(!$userData || !password_verify($input['password'],$userData['password']))
                 {
-                    throw new \RuntimeExcpetion('L\'email et le mot de passe indiqué ne correspondent à aucun compte existant');
+                    throw new \RuntimeException('L\'email et le mot de passe indiqué ne correspondent à aucun compte existant');
                 }
                 $userObject = new User($userData);
         
-                $_SESSION['user'] = $userObject;
+                $_SESSION['user'] = serialize($userObject);
         
                 $name = 'Connection of a user';
                 $log = 'Connection of the user with the id_user equal to '.$userObject->getIdUser().', after a SELECT to verify the email and the password';
@@ -156,7 +158,7 @@
     
                 return true;
             }
-            catch (Exception $e)
+            catch (\RuntimeException $e)
             {
                 return 'Erreur :'.$e->getMessage();
             }
@@ -168,25 +170,27 @@
             session_start();
     
             Tools::defaultUser();
-            Tools::redirect();
+            Tools::redirect('./');
         }
     
         public function registerUser(array $input):bool
         {
             try
             {
-                $newUserStatement = $this->database->getConnection()->prepare('INSERT INTO '.self::TABLE_NAME.' (firstname,lastname,email,password,birthday,is_admin');
-                $newUserStatement->execute([
-                    'firstname' => $input['firstname'],
-                    'lastname' => $input['lastname'],
-                    'birth_department' => $input['birth_department'],
-                    'email' => $input['email'],
-                    'phone' => $input['phone'],
-                    'password' => $input['password']
-                ]);
+                // $newUserStatement = $this->database->getConnection()->prepare('INSERT INTO '.self::TABLE_NAME.' (firstname,lastname,email,password,birthday,is_admin');
+                // $newUserStatement->execute([
+                //     'firstname' => $input['firstname'],
+                //     'lastname' => $input['lastname'],
+                //     'birth_department' => $input['birth_department'],
+                //     'email' => $input['email'],
+                //     'phone' => $input['phone'],
+                //     'password' => $input['password']
+                // ]);
+
+                $id = $this->insertUser($input);
                 
                 $name = 'Register User';
-                $log = 'Registering a new user into the table '.static::TABLE_NAME.', the id of the user is '.Tools::lastId();
+                $log = 'Registering a new user into the table '.static::TABLE_NAME.', the id of the user is '.$id;
                 $action = 'SELECT';
     
                 $this->newLog($name,$log,$action);

@@ -4,6 +4,7 @@ namespace Application\Lib;
 
 use Application\Lib\Classes\User;
 use Application\Model\AdminRepository;
+use Application\Model\PilotRepository;
 
 class Tools {
 
@@ -50,8 +51,18 @@ class Tools {
         return checkdate($dateInArray[1],$dateInArray[2],$dateInArray[0]); 
     }
 
+    public static function getSession():User
+    {
+        return unserialize($_SESSION['user']);
+    }
+
     public static function defaultUser():void
     {
+        if(isset($_SESSION['token'])) $token = $_SESSION['token'];
+
+        session_destroy();
+        session_start();
+
         $data = [
             'id_user' => 1,
             'firstname' => 'default',
@@ -65,7 +76,13 @@ class Tools {
             'creation_date' => '2023-04-12 15:30:59',
         ];
         
-        $_SESSION['user'] = new User($data);
+        $_SESSION['user'] = serialize(new User($data));
+        if(isset($token)) $_SESSION['token'] = $token;
+    }
+
+    public static function getSessionUserId():int
+    {
+        return unserialize($_SESSION['user'])->getIdUser();
     }
 
     public static function isAdmin():bool
@@ -74,11 +91,28 @@ class Tools {
         $logger = new Logger($db);
         $adminRepository = new AdminRepository($db, $logger);
 
-        $id = $_SESSION['user']->getIdUser();
+        $id = self::getSessionUserId();
 
         try {
-            $admin = $adminRepository->getAdminById($id);
-            return true;
+            if(!$adminRepository->getAdminById($id)) return false;
+            else return true;
+        }
+        catch(Exception $e) {
+            return false;
+        }
+    }
+
+    public static function isPilot():bool
+    {
+        $db = new DatabaseConnection();
+        $logger = new Logger($db);
+        $pilotRepository = new PilotRepository($db, $logger);
+
+        $id = self::getSessionUserId();
+
+        try {
+            if(!$pilotRepository->getPilotById($id)) return false;
+            else return true;
         }
         catch(Exception $e) {
             return false;

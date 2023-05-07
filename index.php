@@ -2,62 +2,22 @@
 
 session_start();
 
-require_once('./Autoloader.php');
+require 'Autoloader.php';
 
 use Application\Lib\Tools;
-use Application\Controllers\Homepage;
-use Application\Controllers\Login;
-use Application\Controllers\Signup;
-use Application\Controllers\Companies;
+use Application\Router\MainRouter;
 
-Tools::defaultUser();
+$uri = str_replace('/NextBe','',$_SERVER['REQUEST_URI']);
 
-if(!isset($_GET['action']))
-{
-    (new Homepage)->execute();
-}
+$router = new MainRouter($uri);
 
-else
-{
-    switch ($_GET['action']) 
-    {
-        case 'login' :
-            (new Login)->execute(Tools::isAPost());
-        break;
-        
-        case 'signup' :
-            (new Signup)->execute(Tools::isAPost());
-        break;
-        
-        case 'companies' :
-            (new Companies)->execute();
-        break;
+$router->get('/','Homepage#execute');
+$router->get('/signup','Signup#execute');
+$router->post('/signup','Signup#signup');
+$router->get('/login','Login#execute');
+$router->post('/login','Login#login');
+$router->get('/logout','Login#logout');
+$router->get('/account','UserPanel#execute');
 
-        case 'admin' :
-            //condition for admin access
-            if(!$isAdmin)
-            {
-                (new Homepage)->execute();
-            }
-            else
-            {
-                if(!isset($_GET['menu']))
-                {
-                    (new Admin)->execute();
-                }
-                else
-                {
-                    switch ($_GET['menu'])
-                    {
-                        
-                    }
-                }
-            }
 
-        break;
-
-        default:
-            echo 'error 404';
-        break;
-    }
-}
+$router->run();

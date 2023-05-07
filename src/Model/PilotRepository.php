@@ -30,7 +30,7 @@ Class PilotRepository extends Repository
         }
     }
     
-    public function getPilotById(int $idPilot):Pilot
+    public function getPilotById(int $idPilot):Pilot|bool
     {
         try {
             $data = $this->getDataById($idPilot);
