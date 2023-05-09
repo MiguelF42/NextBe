@@ -36,7 +36,7 @@ Class AdminRepository extends Repository
             $data = $this->getDataById($idAdmin);
             
             $name = 'Select a(n) Admin';
-            $log = 'Selection of the data in Admins table with an id_admin equal to $idAdmin';
+            $log = 'Selection of the data in Admins table with an id_admin equal to '.$idAdmin;
             $action = 'SELECT';
             
             $this->newLog($name,$log,$action);
@@ -45,6 +45,31 @@ Class AdminRepository extends Repository
         }
         catch(\Exception $e){
            throw new \Exception ('Erreur :'.$e->getMessage());
+        }
+    }
+
+    public function getAdminByUserId(int $idUser):Admin|bool
+    {
+        try{
+            $query = $this->database->getConnection()->query('SELECT * FROM '.static::TABLE_NAME.' WHERE id_user = '.$idUser);
+
+            $data = $query->fetch();
+
+            if(!$data) return false;
+
+            $admin = $this->dataInClass($data);
+
+            $name = 'Select a(n) Admin by id_user';
+            $log = 'Selection of the data in Admins table with an id_user equal to '.$idUser;
+            $action = 'SELECT';
+            
+            $this->newLog($name,$log,$action);
+
+            return $admin;
+        }
+        catch(\Exception $e)
+        {
+            throw new \Exception ('Erreur :'.$e->getMessage());
         }
     }
 

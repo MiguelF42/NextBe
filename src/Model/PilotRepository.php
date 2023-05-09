@@ -1,6 +1,7 @@
 <?php
 Namespace Application\Model;
 
+use Application\Lib\Tools;
 Use Application\Lib\Repository;
 Use Application\Lib\Classes\Pilot;
 
@@ -45,6 +46,31 @@ Class PilotRepository extends Repository
         }
         catch(\Exception $e){
             return 'Erreur :'.$e->getMessage();
+        }
+    }
+
+    public function getPilotByUserId(int $idUser):Pilot|bool
+    {
+        try{
+            $query = $this->database->getConnection()->query('SELECT * FROM '.static::TABLE_NAME.' WHERE id_user = '.$idUser);
+
+            $data = $query->fetch();
+
+            if(!$data) return false;
+
+            $pilot = $this->dataInClass($data);
+
+            $name = 'Select a(n) Pilot by id_user';
+            $log = 'Selection of the data in Pilots table with an id_user equal to '.$idUser;
+            $action = 'SELECT';
+            
+            $this->newLog($name,$log,$action);
+
+            return $pilot;
+        }
+        catch(\Exception $e)
+        {
+            throw new \Exception ('Erreur :'.$e->getMessage());
         }
     }
 

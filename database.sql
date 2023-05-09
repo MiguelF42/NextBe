@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS logs;
 DROP TABLE IF EXISTS reservations;
+DROP TABLE IF EXISTS tickets;
 DROP TABLE IF EXISTS flights;
 DROP TABLE IF EXISTS airports;
 DROP TABLE IF EXISTS seats;
@@ -127,6 +128,15 @@ CREATE TABLE flights(
    FOREIGN KEY(airport_arrival) REFERENCES airports(id_airport),
    FOREIGN KEY(id_plane) REFERENCES planes(id_plane),
    FOREIGN KEY(id_pilot) REFERENCES pilots(id_pilot)
+)ENGINE = InnoDB;
+
+CREATE TABLE tickets(
+   id_ticket BIGINT UNSIGNED,
+   id_seat VARCHAR(16) NOT NULL,
+   id_flight INT UNSIGNED NOT NULL,
+   PRIMARY KEY(id_ticket),
+   FOREIGN KEY(id_seat) REFERENCES seats(id_seat),
+   FOREIGN KEY(id_flight) REFERENCES flights(id_flight)
 )ENGINE = InnoDB;
 
 CREATE TABLE reservations(

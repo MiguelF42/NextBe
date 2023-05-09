@@ -9,8 +9,8 @@ Class ReservationRepository extends Repository
     const TABLE_NAME = 'reservations';
     const CLASS_NAME = 'Reservation';
     const ID_NAME = 'id_reservation';
-    const ATTRIBUTES_NAME = 'id_reservation,reservation_date,id_seat,id_flight,id_user';
-    const ATTRIBUTES_PREPARE = '?,?,?,?,?';
+    const ATTRIBUTES_NAME = 'id_reservation,reservation_date,id_ticket,id_user';
+    const ATTRIBUTES_PREPARE = '?,?,?,?';
 
     public function getReservations():array
     {

@@ -9,8 +9,8 @@ Class FlightRepository extends Repository
     const TABLE_NAME = 'flights';
     const CLASS_NAME = 'Flight';
     const ID_NAME = 'id_flight';
-    const ATTRIBUTES_NAME = 'id_flight,date_departure,date_arrival,avaible_seats,id_airport,id_airport_1,id_plane,id_pilot';
-    const ATTRIBUTES_PREPARE = '?,?,?,?,?,?,?,?';
+    const ATTRIBUTES_NAME = 'id_flight,date_departure,date_arrival,airport_departure,airport_arrival,id_plane,id_pilot';
+    const ATTRIBUTES_PREPARE = '?,?,?,?,?,?,?';
 
     public function getFlights():array
     {
@@ -48,7 +48,7 @@ Class FlightRepository extends Repository
         }
     }
 
-    public function insertFlight(array $data):bool
+    public function insertFlight(array $data):bool|int
     {
         try{
             $newId = $this->insertData($data);
@@ -59,10 +59,10 @@ Class FlightRepository extends Repository
             
             $this->newLog($name,$log,$action);
 
-            return true;
+            return $newId;
         }
         catch(\Exception $e){
-            return 'Erreur :'.$e->getMessage();
+            throw new \Exception('Erreur :'.$e->getMessage());
         }
     }
 

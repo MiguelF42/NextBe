@@ -9,7 +9,7 @@ use Application\Model\PilotRepository;
 class Tools {
 
     public static int $counter = 0;
-    public static int $timer = 10;
+    public static int $timer = 1;
 
     public static function debugVar($var) 
     {
@@ -85,7 +85,7 @@ class Tools {
         return unserialize($_SESSION['user'])->getIdUser();
     }
 
-    public static function isAdmin():bool
+    public static function isAdmin():Classes\Admin|bool
     {
         $db = new DatabaseConnection();
         $logger = new Logger($db);
@@ -94,15 +94,16 @@ class Tools {
         $id = self::getSessionUserId();
 
         try {
-            if(!$adminRepository->getAdminById($id)) return false;
-            else return true;
+            $admin = $adminRepository->getAdminByUserId($id);
+            if(!$admin) return false;
+            else return $admin;
         }
         catch(Exception $e) {
             return false;
         }
     }
 
-    public static function isPilot():bool
+    public static function isPilot():Classes\Pilot|bool
     {
         $db = new DatabaseConnection();
         $logger = new Logger($db);
@@ -111,8 +112,9 @@ class Tools {
         $id = self::getSessionUserId();
 
         try {
-            if(!$pilotRepository->getPilotById($id)) return false;
-            else return true;
+            $pilot = $pilotRepository->getPilotByUserId($id);
+            if(!$pilot) return false;
+            else return $pilot;
         }
         catch(Exception $e) {
             return false;

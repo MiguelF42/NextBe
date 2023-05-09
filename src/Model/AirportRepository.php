@@ -12,7 +12,7 @@ Class AirportRepository extends Repository
     const ATTRIBUTES_NAME = 'id_airport,name,country,city';
     const ATTRIBUTES_PREPARE = '?,?,?,?';
 
-    public function getAirports():array
+    public function getAirports():array|string
     {
         try {
             $data = $this->getData();
@@ -26,6 +26,27 @@ Class AirportRepository extends Repository
             return $data;
         }
         catch(\Exception $e){
+            return 'Erreur :'.$e->getMessage();
+        }
+    }
+
+    public function getAirportsOrderByName():array|string
+    {
+        try{
+            $query = $this->database->getConnection()->query('SELECT * FROM '.static::TABLE_NAME.' ORDER BY name');
+
+            $data = $this->dataInArray($query);
+
+            $name = 'Select all Airports ordered by name';
+            $log = 'Selection of all the data in Airports table ordered by the attribute name';
+            $action = 'SELECT';
+            
+            $this->newLog($name,$log,$action);
+
+            return $data;
+        }
+        catch(\Exception $e)
+        {
             return 'Erreur :'.$e->getMessage();
         }
     }

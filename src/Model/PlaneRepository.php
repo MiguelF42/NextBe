@@ -36,7 +36,7 @@ Class PlaneRepository extends Repository
             $data = $this->getDataById($idPlane);
             
             $name = 'Select a(n) Plane';
-            $log = 'Selection of the data in Planes table with an id_plane equal to $idPlane';
+            $log = 'Selection of the data in Planes table with an id_plane equal to '.$idPlane;
             $action = 'SELECT';
             
             $this->newLog($name,$log,$action);
@@ -45,6 +45,46 @@ Class PlaneRepository extends Repository
         }
         catch(\Exception $e){
             return 'Erreur :'.$e->getMessage();
+        }
+    }
+
+    public function getPlaneByIdCompanie(int $idCompanie):array|bool
+    {
+        try {  
+            $query = $this->database->getConnection()->prepare('SELECT id_plane,circulation_date,model.name AS model,company.name AS company FROM '.static::TABLE_NAME.' INNER JOIN models ON models.id_model = planes.id_model INNER JOIN companies ON companies.id_companie = planes.id_companie WHERE planes.id_company = '.$idCompanie);
+            $query->execute();
+            $data = $query->fetchAll();
+        
+            $name = 'Select a(n) Planes by id_companie';
+            $log = 'Selection of the data in Planes table with an id_companie equal to '.$idCompanie.' 2 INNER JOIN with models and comapnies tables';
+            $action = 'SELECT';
+
+            $this->newLog($name,$log,$action);
+
+            return $data;
+        }
+        catch(\Exception $e){
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    public function getPlanesWithInner():array|bool
+    {
+        try{
+            $query = $this->database->getConnection()->prepare('SELECT id_plane,circulation_date,models.name AS model,companies.name AS company FROM '.static::TABLE_NAME.' INNER JOIN models ON models.id_model = planes.id_model INNER JOIN companies ON companies.id_company = planes.id_company');
+            $query->execute();
+            $data = $query->fetchAll();
+        
+            $name = 'Select a(n) Planes by id_companie';
+            $log = 'Selection of the data in Planes table with 2 INNER JOIN with models and comapnies tables';
+            $action = 'SELECT';
+
+            $this->newLog($name,$log,$action);
+
+            return $data;
+        }
+        catch(\Exception $e){
+            throw new \Exception($e->getMessage());
         }
     }
 

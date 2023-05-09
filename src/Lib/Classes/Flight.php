@@ -8,9 +8,8 @@ class Flight
     private int $idFlight;
     private \DateTimeImmutable $dateDeparture;
     private \DateTimeImmutable $dateArrival;
-    private int $avaibleSeats;
-    private int $idAirport;
-    private int $idAirport1;
+    private int $airportDeparture;
+    private int $airportArrival;
     private int $idPlane;
     private int $idPilot;
     
@@ -19,9 +18,8 @@ class Flight
         $this->idFlight = $flight['id_flight'];
         $this->dateDeparture = new \DateTimeImmutable($flight['date_departure']);
         $this->dateArrival = new \DateTimeImmutable($flight['date_arrival']);
-        $this->avaibleSeats = $flight['avaible_seats'];
-        $this->idAirport = $flight['id_airport'];
-        $this->idAirport1 = $flight['id_airport_1'];
+        $this->airportDeparture = $flight['airport_departure'];
+        $this->airportArrival = $flight['airport_arrival'];
         $this->idPlane = $flight['id_plane'];
         $this->idPilot = $flight['id_pilot'];
         
@@ -60,36 +58,25 @@ class Flight
     }
     
     
-    public function getAvaibleSeats()
+    public function getAirportDeparture()
     {
-        return $this->avaibleSeats;
+        return $this->airportDeparture;
     }
 
-    public function setAvaibleSeats(int $data)
+    public function setAirportDeparture(int $data)
     {
-        $this->avaibleSeats = $data;
+        $this->airportDeparture = $data;
     }
     
     
-    public function getIdAirport()
+    public function getAirportArrival()
     {
-        return $this->idAirport;
-    }
-
-    public function setIdAirport(int $data)
-    {
-        $this->idAirport = $data;
-    }
-    
-    
-    public function getIdAirport1()
-    {
-        return $this->idAirport1;
+        return $this->airportArrival;
     }
 
-    public function setIdAirport1(int $data)
+    public function setAirportArrival(int $data)
     {
-        $this->idAirport1 = $data;
+        $this->airportArrival = $data;
     }
     
     

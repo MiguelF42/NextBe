@@ -7,16 +7,14 @@ class Reservation
     
     private int $idReservation;
     private \DateTimeImmutable $reservationDate;
-    private string $idSeat;
-    private int $idFlight;
+    private int $idTicket;
     private int $idUser;
     
     public function __construct(array $reservation)
     {
         $this->idReservation = $reservation['id_reservation'];
         $this->reservationDate = new \DateTimeImmutable($reservation['reservation_date']);
-        $this->idSeat = $reservation['id_seat'];
-        $this->idFlight = $reservation['id_flight'];
+        $this->idTicket = $reservation['id_ticket'];
         $this->idUser = $reservation['id_user'];
         
     }
@@ -43,25 +41,14 @@ class Reservation
     }
     
     
-    public function getIdSeat()
+    public function getIdTicket()
     {
-        return $this->idSeat;
+        return $this->idTicket;
     }
 
-    public function setIdSeat(string $data)
+    public function setIdTicket(int $data)
     {
-        $this->idSeat = $data;
-    }
-    
-    
-    public function getIdFlight()
-    {
-        return $this->idFlight;
-    }
-
-    public function setIdFlight(int $data)
-    {
-        $this->idFlight = $data;
+        $this->idTicket = $data;
     }
     
     

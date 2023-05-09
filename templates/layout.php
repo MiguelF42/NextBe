@@ -2,7 +2,7 @@
 
 use Application\Lib\Tools;
 
-$account = Tools::getSessionUserId() == 1 ? ['login','Connexion'] : ['account','Mon Compte'];
+$account = Tools::getSessionUserId() == 1 ? ['login','Connexion'] : ['panel','Mon Compte'];
 
 ?>
 <!DOCTYPE html>

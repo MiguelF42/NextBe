@@ -48,6 +48,47 @@ Class SeatRepository extends Repository
         }
     }
 
+    public function getSeatsByIdPlane(int $idPlane):array
+    {
+        try {
+            $query = $this->database->getConnection()->prepare('SELECT '.static::TABLE_NAME.'.id_seat FROM '.static::TABLE_NAME.' INNER JOIN models ON seats.id_model = models.id_model INNER JOIN planes ON planes.id_model = models.id_model WHERE planes.id_plane = '.$idPlane);
+            $query->execute();
+
+            $data = $query->fetchAll();
+
+            $name = 'Select some Seats with id_plane';
+            $log = 'Selection of the data in Seats table with an id_model equal to the id_model of the id_plane equal to '.$idPlane;
+            $action = 'SELECT';
+
+            $this->newLog($name,$log,$action);
+            
+            return $data;
+        }
+        catch(\Exception $e){
+
+        }
+    }
+
+    public function getSeatsCountByIdModel(int $idModel):array|bool|string
+    {
+        try{
+            $query = $this->database->getConnection()->prepare('SELECT name,COUNT(id_seat) as quantity FROM seats INNER JOIN type_seat ON type_seat.id_seats = seats.id_seats WHERE id_model = '.$idModel.' GROUP BY seats.id_seats');
+            $query->execute();
+            $data = $query->fetchAll();
+
+            $name = 'Select Count of Seats by id_model';
+            $log = 'Select count of the data in Seats table with an id_model equal to '.$idModel.' grouped by id_seats';
+            $action = 'SELECT';
+            
+            $this->newLog($name,$log,$action);
+
+            return $data;
+        }
+        catch(\Exception $e){
+            return 'Erreur :'.$e->getMessage();
+        }
+    }
+
     public function insertSeat(array $data):bool
     {
         try{

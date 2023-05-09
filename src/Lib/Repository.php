@@ -127,10 +127,14 @@ abstract class Repository
         $valuesBis = str_replace(',',',:',str_replace(static::ID_NAME.',','',str_replace('creation_date','',str_replace('modify_date','',static::ATTRIBUTES_NAME))));
         $values = rtrim($valuesBis,',:');
 
-        // Tools::debugVar($table);
-        // Tools::debugVar($values);
+        $query = 'INSERT INTO '.static::TABLE_NAME.'('.$table.') VALUES(:'.$values.')';
 
-        $insertStatement = $this->database->getConnection()->prepare('INSERT INTO '.static::TABLE_NAME.'('.$table.') VALUES(:'.$values.')');
+        Tools::debugVar($table);
+        Tools::debugVar($values);
+        Tools::debugVar($data);
+        Tools::debugVar($query);
+
+        $insertStatement = $this->database->getConnection()->prepare($query);
         $insertStatement->execute($data);
         $id = $this->lastId();
         
