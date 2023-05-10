@@ -84,12 +84,10 @@ ob_start();
             <div class="flight">
                 <div class="dates">
                     <p>Date et heure de départ : <?= $flight->getDateDeparture()->format('d M. Y') ?></p>
-                    <br>
                     <p>Date et heure d'arrivé : <?= $flight->getDateArrival()->format('d M. Y') ?></p>
                 </div>
                 <div class="airports">
                     <p>Aéroport de départ : <?= $flight->getAirportDeparture() ?></p>
-                    <br>
                     <p>Aéroport d'arrivé : <?= $flight->getAirportArrival() ?></p>
                 </div>
                 <div class="plane">
@@ -99,6 +97,7 @@ ob_start();
                     <p>Pilote : <?= $flight->getIdPilot() ?></p>
                 </div>
             </div>
+            <br>
             <?php
         }
     ?>

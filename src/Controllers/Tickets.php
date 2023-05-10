@@ -26,4 +26,42 @@ class Tickets
 
         require_once('templates/tickets.php');
     }
+
+    public function seeTicket($id)
+    {
+        $ticketRepository = $this->getRepo('Ticket');
+
+        $ticket = $ticketRepository->getTicketFullById($id);
+
+        require('templates/seeTicket.php');
+        // Tools::debugVar($ticket);
+    }
+
+    public function reserveTicket($id)
+    {
+        $idUser = Tools::getSessionUserId();
+
+        if($idUser === 1) {
+            $_SESSION['redirect'] = './tickets/'.$id;
+            Tools::redirect('../login');
+        }
+
+        $ticketRepository = $this->getRepo('Ticket');
+
+        $data = $ticketRepository->getTicketById($id);
+
+        if(!$data) Tools::redirect('./');
+
+        $reservationRepository = $this->getRepo('Reservation');
+
+        $data = [
+            'id_ticket' => intVal($id),
+            'id_user' => $idUser
+        ];
+
+       $reservationRepository->insertReservation($data);
+
+       Tools::redirect('../panel/reservations');
+
+    }
 }

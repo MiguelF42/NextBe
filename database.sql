@@ -23,7 +23,7 @@ CREATE TABLE users(
    address VARCHAR(64) NOT NULL,
    postal_code VARCHAR(32) NOT NULL,
    country VARCHAR(32) NOT NULL,
-   creation_date DATETIME NOT NULL,
+   creation_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
    PRIMARY KEY(id_user),
    UNIQUE(email)
 )ENGINE = InnoDB;
@@ -43,7 +43,7 @@ CREATE TABLE logs(
    category VARCHAR(32) NOT NULL,
    action VARCHAR(32) NOT NULL,
    ip VARCHAR(64) NOT NULL,
-   creation_date DATETIME NOT NULL,
+   creation_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
    id_user SMALLINT UNSIGNED NOT NULL,
    PRIMARY KEY(id_log),
    FOREIGN KEY(id_user) REFERENCES users(id_user)
@@ -118,7 +118,6 @@ CREATE TABLE flights(
    id_flight INT UNSIGNED AUTO_INCREMENT,
    date_departure DATETIME NOT NULL,
    date_arrival DATETIME NOT NULL,
-   avaible_seats SMALLINT UNSIGNED NOT NULL,
    airport_departure SMALLINT UNSIGNED NOT NULL,
    airport_arrival SMALLINT UNSIGNED NOT NULL,
    id_plane SMALLINT UNSIGNED NOT NULL,
@@ -131,7 +130,7 @@ CREATE TABLE flights(
 )ENGINE = InnoDB;
 
 CREATE TABLE tickets(
-   id_ticket BIGINT UNSIGNED,
+   id_ticket BIGINT UNSIGNED AUTO_INCREMENT,
    id_seat VARCHAR(16) NOT NULL,
    id_flight INT UNSIGNED NOT NULL,
    PRIMARY KEY(id_ticket),
@@ -142,12 +141,11 @@ CREATE TABLE tickets(
 CREATE TABLE reservations(
    id_reservation INT UNSIGNED AUTO_INCREMENT,
    reservation_date DATETIME NOT NULL,
-   id_seat VARCHAR(16) NOT NULL,
-   id_flight INT UNSIGNED NOT NULL,
+   id_ticket BIGINT UNSIGNED NOT NULL,
    id_user SMALLINT UNSIGNED NOT NULL,
    PRIMARY KEY(id_reservation),
-   FOREIGN KEY(id_seat) REFERENCES seats(id_seat),
-   FOREIGN KEY(id_flight) REFERENCES flights(id_flight),
+   UNIQUE(id_ticket),
+   FOREIGN KEY(id_ticket) REFERENCES tickets(id_ticket),
    FOREIGN KEY(id_user) REFERENCES users(id_user)
 )ENGINE = InnoDB;
 
@@ -443,6 +441,7 @@ INSERT INTO airports (name,country) VALUES
 ('Montevideo Carrasco Airport','Uruguay');
 
 INSERT INTO companies (name, logo) VALUES
+('Default Airlines','Default.jpg'),
 ('Qatar Airways','Qatar_Airways.jpg'),
 ('United Airlines','United_Airlines.jpg'),
 ('Qantas','Qantas.jpg'),
@@ -493,3 +492,42 @@ INSERT INTO companies (name, logo) VALUES
 ('easyJet','easyJet.jpg'),
 ('Aegean Airlines','Aegean_Airlines.jpg'),
 ('Jet2.com','Jet2.com.jpg');
+
+INSERT INTO `users` ( `firstname`, `lastname`, `email`, `password`, `phone`, `birthday`, `address`, `postal_code`, `country`, `creation_date`) VALUES
+('default', 'default', 'default@default.com', '1234', '+0 00 00 00 00', '2000-01-01', '1 default ', '00000', 'default', '2023-04-12 15:30:59'),
+('admin', 'admin', 'admin@gmail.com', '$argon2i$v=19$m=65536,t=4,p=1$U1E0ZFNRVS45NEVXTWZGSg$Pc/ZgMnKm4Ymr7eKej2n5sFkRiqWpMcA5rvIUHw+Yuw', '+0 00 00 00 00', '2023-04-01', '1 admin street, at admin city', '00000', 'AdminLand', '2023-04-30 19:29:51'),
+('Miguel', 'FERREIRA', 'test@gmail.com', '$argon2i$v=19$m=65536,t=4,p=1$V0l2Q1NEWktwWVRDZG9IbA$pfu2Ob0fPqdLFF79kstuHoFPu3KqkrfxwBk1VcicQHA', '0783676056', '2023-05-03', '1 rue d\'alsace', '93290', 'France', '2023-05-07 15:36:37'),
+('Jean-Richrd', 'Martin', 'testv2@gmail.com', '$argon2i$v=19$m=65536,t=4,p=1$ZDQzaWVCeldONnRRZVNxYQ$DBoEhZSKgv0TjZrIYGcGni+/rCgmJKqaRanrHfYcI4k', '0783676056', '2023-05-05', '1 rue d\'alsace', '93290', 'France', '2023-05-08 01:25:11');
+
+INSERT INTO `admins` (`id_company`,`id_user`) VALUES (1,2);
+
+INSERT INTO `pilots` (`salary`,`start_date`,`id_company`,`id_user`) VALUES (50000,'2022-10-05',1,3);
+
+INSERT INTO `models` (`name`,`constructor`) VALUES ('A001','Airbus');
+
+INSERT INTO `planes` (`circulation_date`, `id_model`,`id_company`) VALUES ('2023-05-01',1,2);
+
+INSERT INTO `type_seat` (`name`,`price`) VALUES
+('éco', 50),
+('normal', 100),
+('business', 250),
+('premium', 500);
+
+INSERT INTO `seats` (`id_seat`,`id_model`,`id_seats`) VALUES
+('A001-E01',1,1),
+('A001-E02',1,1),
+('A001-E03',1,1),
+('A001-E04',1,1),
+('A001-E05',1,1),
+('A001-E06',1,1),
+('A001-E07',1,1),
+('A001-E08',1,1),
+('A001-E09',1,1),
+('A001-E10',1,1),
+('A001-N01',1,2),
+('A001-N02',1,2),
+('A001-N03',1,2),
+('A001-N04',1,2),
+('A001-B01',1,3),
+('A001-B02',1,3),
+('A001-P01',1,4);

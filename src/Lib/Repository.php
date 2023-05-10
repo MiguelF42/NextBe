@@ -121,24 +121,29 @@ abstract class Repository
     protected function insertData(array $data):int
     {
         // $insertStatement = $this->database->getConnection()->prepare('INSERT INTO '.static::TABLE_NAME.'('.str_replace(static::ID_NAME.',','',static::ATTRIBUTES_NAME).') VALUES('.static::ATTRIBUTES_PREPARE.')');
-        $tableBis = str_replace(static::ID_NAME.',','',str_replace('creation_date','',str_replace('modify_date','',static::ATTRIBUTES_NAME)));
-        $table = rtrim($tableBis,',');
-
-        $valuesBis = str_replace(',',',:',str_replace(static::ID_NAME.',','',str_replace('creation_date','',str_replace('modify_date','',static::ATTRIBUTES_NAME))));
-        $values = rtrim($valuesBis,',:');
-
-        $query = 'INSERT INTO '.static::TABLE_NAME.'('.$table.') VALUES(:'.$values.')';
-
-        // Tools::debugVar($table);
-        // Tools::debugVar($values);
-        // Tools::debugVar($data);
-        // Tools::debugVar($query);
-
-        $insertStatement = $this->database->getConnection()->prepare($query);
-        $insertStatement->execute($data);
-        $id = $this->lastId();
-        
-        return $id;
+        try {
+            $tableBis = str_replace(static::ID_NAME.',','',str_replace('creation_date','',str_replace('reservation_date,','',static::ATTRIBUTES_NAME)));
+            $table = rtrim($tableBis,',');
+    
+            $valuesBis = str_replace(',',',:',str_replace(static::ID_NAME.',','',str_replace('creation_date','',str_replace('reservation_date,','',static::ATTRIBUTES_NAME))));
+            $values = rtrim($valuesBis,',:');
+    
+            $query = 'INSERT INTO '.static::TABLE_NAME.'('.$table.') VALUES(:'.$values.')';
+    
+            Tools::debugVar($table);
+            Tools::debugVar($values);
+            Tools::debugVar($data);
+            Tools::debugVar($query);
+    
+            $insertStatement = $this->database->getConnection()->prepare($query);
+            $insertStatement->execute($data);
+            $id = $this->lastId();
+            
+            return $id;
+        }
+        catch(\Exception $e){
+            echo $e->getMessage();
+        }
     }
 
     // protected function patchData(int $id,array $data):bool

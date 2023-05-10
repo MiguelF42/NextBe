@@ -138,24 +138,24 @@ class Panel
             $flightId = $flightRepository->insertFlight($_POST);
             $seats = $seatRepository->getSeatsByIdPlane($_POST['id_plane']);
 
-            foreach($seats as $seat)
-            {
-                $data = [
-                    'id_seat' => $seat['id_seat'],
-                    'id_flight' => $flightId
-                ];
+            $ticketRepository->generateTickets($seats,$flightId);
 
-                $ticketRepository->insertTicket($data);
-            }
+            Tools::redirect('./flights-manager');
 
-            Tools::redirect('./flight-manager');
-
-            // $ticketRepository->generateTickets($seats,$flightId);
         }
         catch(\Exception $e){
-            echo $e->getMessage();
+            throw new \Exception($e->getMessage());
         }
-
     }
 
+    public function reservations()
+    {
+        $panel = $this->choosePanel();
+
+        $reservationRepository = $this->getRepo('Reservation');
+
+        $reservations = $reservationRepository->getReservationsByIdUser(Tools::getSessionUserId());
+
+        require('templates/panel/reservations.php');
+    }
 }

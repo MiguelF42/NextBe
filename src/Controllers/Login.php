@@ -37,7 +37,13 @@ class Login
 
         if(!is_string($success)) 
         {
-            Tools::redirect('./');
+            $link = './';
+            if(isset($_SESSION['redirect']))
+            {
+                $link = $_SESSION['redirect'];
+                unset($_SESSION['redirect']);
+            }
+            Tools::redirect($link);
         }
         
         $error = $success;
