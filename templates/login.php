@@ -34,7 +34,7 @@
             <div>
             <p>Mot de passe oublié ? Cliquez <a href="./?action=forgot">ici</a></p>
             <br>
-            <p>Vous n'avez pas de compte ? <a href="./?action=signup">créez-en-un</a></p>
+            <p>Vous n'avez pas de compte ? <a href="./signup">créez-en-un</a></p>
             </div>
             <input id="btn" type="submit" name="submit" value="connexion">
         </div>

@@ -118,10 +118,12 @@ class Panel
         $airportRepository = $this->getRepo('Airport');
         $planeRepository = $this->getRepo('Plane');
         $pilotRepository = $this->getRepo('Pilot');
+        $flightRepository = $this->getRepo('Flight');
 
         $airports = $airportRepository->getAirportsOrderByName();
         $planes = $planeRepository->getPlanes();
         $pilots = $pilotRepository->getPilots();
+        $flights = $flightRepository->getFlights();
 
         require_once('templates/panel/flightsManager.php');
     }
@@ -136,7 +138,19 @@ class Panel
             $flightId = $flightRepository->insertFlight($_POST);
             $seats = $seatRepository->getSeatsByIdPlane($_POST['id_plane']);
 
-            $ticketRepository->generateTickets($seats,$flightId);
+            foreach($seats as $seat)
+            {
+                $data = [
+                    'id_seat' => $seat['id_seat'],
+                    'id_flight' => $flightId
+                ];
+
+                $ticketRepository->insertTicket($data);
+            }
+
+            Tools::redirect('./flight-manager');
+
+            // $ticketRepository->generateTickets($seats,$flightId);
         }
         catch(\Exception $e){
             echo $e->getMessage();

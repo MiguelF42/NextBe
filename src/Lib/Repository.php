@@ -129,10 +129,10 @@ abstract class Repository
 
         $query = 'INSERT INTO '.static::TABLE_NAME.'('.$table.') VALUES(:'.$values.')';
 
-        Tools::debugVar($table);
-        Tools::debugVar($values);
-        Tools::debugVar($data);
-        Tools::debugVar($query);
+        // Tools::debugVar($table);
+        // Tools::debugVar($values);
+        // Tools::debugVar($data);
+        // Tools::debugVar($query);
 
         $insertStatement = $this->database->getConnection()->prepare($query);
         $insertStatement->execute($data);

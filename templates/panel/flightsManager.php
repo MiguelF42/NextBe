@@ -25,7 +25,7 @@ ob_start();
 <div class="title-div">
     <h1>Gestion des vols :</h1>
 </div>
-<form action="./flight-manager" method="post">
+<form action="./flights-manager" method="post">
     <div class="date">
         <label for="date-departure">Date et heure de départ :
             <input type="datetime-local" name="date_departure" id="date_departure">
@@ -77,7 +77,31 @@ ob_start();
     <button type="submit">Création du vol</button>
 </form>
 <div class="data">
-
+    <?php
+        foreach($flights as $flight)
+        {
+            ?>
+            <div class="flight">
+                <div class="dates">
+                    <p>Date et heure de départ : <?= $flight->getDateDeparture()->format('d M. Y') ?></p>
+                    <br>
+                    <p>Date et heure d'arrivé : <?= $flight->getDateArrival()->format('d M. Y') ?></p>
+                </div>
+                <div class="airports">
+                    <p>Aéroport de départ : <?= $flight->getAirportDeparture() ?></p>
+                    <br>
+                    <p>Aéroport d'arrivé : <?= $flight->getAirportArrival() ?></p>
+                </div>
+                <div class="plane">
+                    <p>Avion : <?= $flight->getIdPlane() ?></p>
+                </div>
+                <div class="pilot">
+                    <p>Pilote : <?= $flight->getIdPilot() ?></p>
+                </div>
+            </div>
+            <?php
+        }
+    ?>
 </div>
 <?php
 

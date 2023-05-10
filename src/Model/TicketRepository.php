@@ -30,6 +30,27 @@ Class TicketRepository extends Repository
             return 'Erreur :'.$e->getMessage();
         }
     }
+
+    public function getTicketsFull():array
+    {
+        try{
+            $query = $this->database->getConnection()->prepare('SELECT id_ticket, airports.name as airport_departure, airports2.name as airport_arrival, flights.date_departure, flights.date_arrival, tickets.id_seat, type_seat.name as seat_cat, type_seat.price as price FROM tickets INNER JOIN flights on flights.id_flight = tickets.id_flight INNER JOIN airports ON flights.airport_departure = airports.id_airport INNER JOIN airports as airports2 ON flights.airport_arrival = airports2.id_airport INNER JOIN seats ON seats.id_seat = tickets.id_seat INNER JOIN type_seat ON type_seat.id_seats = seats.id_seats');
+            $query->execute();
+
+            $data = $query->fetchAll();
+
+            $name = 'Select all Tickets with all data by inner';
+            $log = 'Selection of all the data in Tickets table';
+            $action = 'SELECT';
+            
+            $this->newLog($name,$log,$action);
+
+            return $data;
+        }
+        catch(\Exception $e){
+            echo $e->getMessage();
+        }
+    } 
     
     public function getTicketById(int $idTicket):Ticket
     {
@@ -63,7 +84,7 @@ Class TicketRepository extends Repository
             return true;
         }
         catch(\Exception $e){
-            return 'Erreur :'.$e->getMessage();
+            echo 'Erreur :'.$e->getMessage();
         }
     }
 

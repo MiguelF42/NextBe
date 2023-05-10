@@ -32,7 +32,7 @@ $account = Tools::getSessionUserId() == 1 ? ['login','Connexion'] : ['panel','Mo
             <div class="links">
                 <ul>
                     <li><a href="#">A propos</a></li>
-                    <li><a href="#">Vol</a></li>
+                    <li><a href="./tickets">Vol</a></li>
                     <li><a href="#">Companie</a></li>
                     <li><a href="#">Destination</a></li>
                     <li><a href="#">Modalités</a></li>

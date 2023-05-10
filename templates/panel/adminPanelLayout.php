@@ -16,7 +16,7 @@
         <nav>
         <ul>
             <li><a href="../">Accueil</a></li>
-            <li><a href="./">Vos informations</a>
+            <li><a href="./account">Vos informations</a>
             <li><a href="./reservations">Vos réservations</a></li>
             <li><a href="./planes">Avions</a></li>
             <li><a href="./models">Modèles</a></li>
